@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Splash from './components/Splash'
+import Quiz from './components/Quiz'
 import './App.css'
 
 export default function App() {
@@ -8,7 +9,7 @@ export default function App() {
     return <main className="app">
         {
             quizStarted?
-            <div>Started</div>
+            <Quiz />
             :
             <Splash
                 title="Quizzical"
