@@ -6,6 +6,10 @@
     flex-wrap: wrap;
 }
 
-.question--answers--answer {
+.question--answer {
     margin: 1em;
+}
+
+.question--answer > input[type="radio"] {
+    margin-right: 10px;
 }

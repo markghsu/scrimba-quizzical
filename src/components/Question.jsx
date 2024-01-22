@@ -1,16 +1,13 @@
 import React, {useState, useId} from 'react'
 import './Question.css'
 
-export default function Question({question, answers}) {
-    const [selectedAnswer, setSelectedAnswer] = useState('')
+export default function Question({question, answers, selectedAnswer, handleAnswerSelected}) {
 
     function handleChange(evt) {
-        const {name, value} = evt.target
-        setSelectedAnswer(evt.target.value)
+        handleAnswerSelected(evt.target.value)
     }
 
     const id = useId()
-
 
     return (
         <div role="radiogroup" className="question" aria-labelledby={id + "-question"}>
@@ -18,18 +15,19 @@ export default function Question({question, answers}) {
                 <div className="question--answers">
                     {
                         answers.map((ele, index) => (
-                            <div className="question--answers--answer"><input
+                            <div className="question--answer" key={index}>
+                                <input
                                     type="radio"
                                     id={id + "-answer-" + index}
                                     name={id + "-question"}
                                     value={ele}
                                     checked={selectedAnswer === ele}
-                                    onChange={handleChange}
+                                    onChange={(evt) => {handleAnswerSelected(evt.target.value)}}
                                     />
                                     <label htmlFor={id + "-answer-" + index}>{ele}</label>
-                                </div>
-                            ))
-                        }
+                            </div>
+                        ))
+                    }
                 </div>
 
         </div>
