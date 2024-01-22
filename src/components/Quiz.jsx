@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { nanoid } from 'nanoid'
 import { decode } from 'html-entities'
+import Question from './Question'
 import './Quiz.css'
 
 const api = "https://opentdb.com/api.php?amount=5&category=9&type=multiple"
@@ -19,7 +20,7 @@ export default function Quiz() {
                     id: nanoid(),
                     question: decode(ele.question),
                     correct_answer: decode(ele.correct_answer),
-                    incorrect_answer: ele.incorrect_answers.map(ans => decode(ans)),
+                    incorrect_answers: ele.incorrect_answers.map(ans => decode(ans)),
                 }))
                 setQuestions(qs);
             }).catch(err => {
@@ -30,9 +31,20 @@ export default function Quiz() {
             controller.abort()
         };
     },[])
+
+    function mixAnswers(correct, incorrect) {
+        const ind = Math.floor(Math.random()*incorrect.length)
+        return [...incorrect.slice(0,ind),correct,...incorrect.slice(ind)]
+    }
     return (
-        <section className="quiz">
-            {questions.map(ele => <div key={ele.id}>{ele.question}</div>)}
-        </section>
+        <form className="quiz">
+            {questions.map(ele =>
+                <Question
+                    key={ele.id}
+                    question={ele.question}
+                    answers={mixAnswers(ele.correct_answer,ele.incorrect_answers)}
+                />
+            )}
+        </form>
     )
 }

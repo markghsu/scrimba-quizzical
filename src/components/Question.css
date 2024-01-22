@@ -1,0 +1,11 @@
+.question {
+    border-bottom: 1px solid #DBDEF0;
+}
+.question--answers {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.question--answers--answer {
+    margin: 1em;
+}
