@@ -1,0 +1,38 @@
+.splash {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.splash--title {
+    font-family: Karla;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.25em;
+}
+
+.splash--subtitle {
+    color: #293264;
+    font-family: Inter;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0 0 1.5em;
+}
+
+.splash--btn {
+    font-family: Inter;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 1em 3.5em;
+    border-radius: 15px;
+    background: #4D5B9E;
+    color: #F5F7FB;
+    border: none;
+    cursor: pointer;
+}
+
+.splash--btn:active {
+    box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}

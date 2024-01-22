@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Karla:wght@700&display=swap');
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.app {
+    background: #F5F7FB;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(./assets/blob1.svg), url(./assets/blob2.svg);
+    background-repeat:  no-repeat;
+    background-position: top right, bottom left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    color: #293264;
+}
