@@ -9,7 +9,7 @@
 .app {
     background: #F5F7FB;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     background-image: url(./assets/blob1.svg), url(./assets/blob2.svg);
     background-repeat:  no-repeat;
     background-position: top right, bottom left;

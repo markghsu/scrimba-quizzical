@@ -4,18 +4,34 @@ import { decode } from 'html-entities'
 import Question from './Question'
 import './Quiz.css'
 
-const api = "https://opentdb.com/api.php?amount=5&category=9&type=multiple"
-
 export default function Quiz() {
     const [questions, setQuestions] = useState([])
+    const [grades, setGrades] = useState({isGraded:false})
 
     useEffect(() => {
+        if(grades.isGraded) return; // ONLY GET NEW QUESTIONS IF WE ARE REGRADING
         let controller = new AbortController()
         let signal = controller.signal
 
-        fetch(api,{ signal })
-            .then(res => res.json())
-            .then(data => {
+        getData(signal).then(data => {
+            if(data) setQuestions(data)
+        })
+
+        return () => {
+            // ABORT TO CLEAN UP IN CASE WE MOUNT THIS COMPONENT MULITPLE TIME
+            // WE NEED THIS TO PREVENT 429 ERRORS
+            controller.abort()
+        };
+    },[grades.isGraded])
+
+    function getData(signal) {
+        const api = "https://opentdb.com/api.php?amount=5&category=9&type=multiple"
+
+        return fetch(api,{ signal })
+            .then(res => {
+                if(!res.ok) throw "Error"
+                return res.json()
+            }).then(data => {
                 const qs = data.results.map((ele) => {
                     // CLEAN ALL INCOMING DATA OF HTML ENTITIES
                     const correctAnswer = decode(ele.correct_answer)
@@ -30,18 +46,12 @@ export default function Quiz() {
                         selectedAnswer: ''
                     })
                 })
-                setQuestions(qs);
+                return qs
 
             }).catch(err => {
-                console.error(err)
+                return null
             })
-
-        return () => {
-            // ABORT TO CLEAN UP IN CASE WE MOUNT THIS COMPONENT MULITPLE TIME
-            // WE NEED THIS TO PREVENT 429 ERRORS
-            controller.abort()
-        };
-    },[])
+    }
 
     function mixAnswers(correct, incorrect) {
         // RANDOMLY INSERT THE CORRECT ANSWER
@@ -59,8 +69,19 @@ export default function Quiz() {
             :question
         }))
     }
+
+    function gradeQuiz(evt) {
+        evt.preventDefault()
+        const score = questions.reduce((score, e) => score + (e.selectedAnswer === e.correctAnswer?1:0),0)
+        setGrades({score, isGraded: true, total: questions.length})
+    }
+
+    function restartQuiz() {
+        setGrades({isGraded:false})
+    }
+
     return (
-        <form className="quiz">
+        <form className="quiz" onSubmit={gradeQuiz}>
             {questions.map(ele =>
                 <Question
                     key={ele.id}
@@ -70,6 +91,12 @@ export default function Quiz() {
                     handleAnswerSelected={(val) => handleAnswerSelected(ele.id,val)}
                 />
             )}
+            {grades.isGraded?
+                <div className="quiz--gameover">
+                    <p className="grades">You scored {grades.score}/{grades.total}.</p>
+                    <button type="button" className="restartBtn" onClick={restartQuiz}>Restart Game</button>
+                </div>
+            :<button type="submit" className="submit-btn">Check Answers</button>}
         </form>
     )
 }
