@@ -1,3 +1,33 @@
 .quiz {
+    width: 90%;
     max-width: 700px;
+}
+
+.quiz--btn {
+    display: block;
+    margin: 2em;
+    color: #F5F7FB;
+    font-family: "Inter", sans-serif;
+    font-size: 0.625rem;
+    font-weight: 500;
+    background: #4D5B9E;
+    border: none;
+    padding: 1em 2em;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.quiz--submit {
+    margin: 2em auto;
+}
+
+.quiz--gameover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quiz--score {
+    font-size: 0.8rem;
+    font-weight: 700;
 }

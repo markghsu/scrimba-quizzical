@@ -94,12 +94,12 @@ export default function Quiz() {
             )}
             {isGraded?
                 <div className="quiz--gameover">
-                    <p className="grades">You scored {
+                    <p className="quiz--score">You scored {
                         questions.reduce((score, e) => score + (e.selectedAnswer === e.correctAnswer?1:0),0)
                     }/{questions.length} correct answers</p>
-                    <button type="button" className="restartBtn" onClick={restartQuiz}>Restart Game</button>
+                    <button type="button" className="quiz--btn" onClick={restartQuiz}>Restart Game</button>
                 </div>
-            :<button type="submit" className="submit-btn">Check Answers</button>}
+            :<button type="submit" className="quiz--btn quiz--submit">Check Answers</button>}
         </form>
     )
 }
