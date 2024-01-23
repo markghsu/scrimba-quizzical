@@ -6,10 +6,10 @@ import './Quiz.css'
 
 export default function Quiz() {
     const [questions, setQuestions] = useState([])
-    const [grades, setGrades] = useState({isGraded:false})
+    const [isGraded, setIsGraded] = useState(false)
 
     useEffect(() => {
-        if(grades.isGraded) return; // ONLY GET NEW QUESTIONS IF WE ARE REGRADING
+        if(isGraded) return; // ONLY GET NEW QUESTIONS IF WE ARE NEW/RESETTING GAME
         let controller = new AbortController()
         let signal = controller.signal
 
@@ -22,7 +22,7 @@ export default function Quiz() {
             // WE NEED THIS TO PREVENT 429 ERRORS
             controller.abort()
         };
-    },[grades.isGraded])
+    },[isGraded])
 
     function getData(signal) {
         const api = "https://opentdb.com/api.php?amount=5&category=9&type=multiple"
@@ -72,12 +72,11 @@ export default function Quiz() {
 
     function gradeQuiz(evt) {
         evt.preventDefault()
-        const score = questions.reduce((score, e) => score + (e.selectedAnswer === e.correctAnswer?1:0),0)
-        setGrades({score, isGraded: true, total: questions.length})
+        setIsGraded(true)
     }
 
     function restartQuiz() {
-        setGrades({isGraded:false})
+        setIsGraded(false)
     }
 
     return (
@@ -89,11 +88,15 @@ export default function Quiz() {
                     answers={ele.allAnswers}
                     selectedAnswer={ele.selectedAnswer}
                     handleAnswerSelected={(val) => handleAnswerSelected(ele.id,val)}
+                    disable={isGraded}
+                    actualAnswer={isGraded?ele.correctAnswer:""}
                 />
             )}
-            {grades.isGraded?
+            {isGraded?
                 <div className="quiz--gameover">
-                    <p className="grades">You scored {grades.score}/{grades.total}.</p>
+                    <p className="grades">You scored {
+                        questions.reduce((score, e) => score + (e.selectedAnswer === e.correctAnswer?1:0),0)
+                    }/{questions.length} correct answers</p>
                     <button type="button" className="restartBtn" onClick={restartQuiz}>Restart Game</button>
                 </div>
             :<button type="submit" className="submit-btn">Check Answers</button>}

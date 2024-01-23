@@ -1,7 +1,7 @@
 import React, {useState, useId} from 'react'
 import './Question.css'
 
-export default function Question({question, answers, selectedAnswer, handleAnswerSelected}) {
+export default function Question({question, answers, selectedAnswer, handleAnswerSelected, disable=false, actualAnswer}) {
 
     function handleChange(evt) {
         handleAnswerSelected(evt.target.value)
@@ -23,8 +23,15 @@ export default function Question({question, answers, selectedAnswer, handleAnswe
                                     value={ele}
                                     checked={selectedAnswer === ele}
                                     onChange={(evt) => {handleAnswerSelected(evt.target.value)}}
+                                    disabled={disable}
+                                    required
                                     />
-                                    <label htmlFor={id + "-answer-" + index}>{ele}</label>
+                                    <label className={"question--answer--label" + ((actualAnswer === ele)?" correct":"")}
+                                        htmlFor={id + "-answer-" + index}
+                                        aria-label={(actualAnswer === ele) && ("correct answer " + ele)}
+                                        >
+                                        {ele}
+                                    </label>
                             </div>
                         ))
                     }

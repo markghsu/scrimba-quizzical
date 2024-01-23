@@ -1,15 +1,68 @@
+* {
+    box-sizing: border-box;
+}
 .question {
     border-bottom: 1px solid #DBDEF0;
 }
+
+.question--label {
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: "Karla", sans-serif;
+}
+
 .question--answers {
     display: flex;
     flex-wrap: wrap;
 }
 
 .question--answer {
-    margin: 1em;
+    margin: 0 0.5em 0.5em 0;
 }
 
+/* Adapted from https://codepen.io/markghsu/pen/VwvWjNm */
+
 .question--answer > input[type="radio"] {
-    margin-right: 10px;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.question--answer--label {
+    display: block;
+    font-size: 0.625rem;
+    padding: 0.5em 2em;
+    min-width: 6em;
+    text-align: center;
+    border-radius: 8px;
+    color: #293264;
+    border: 1px solid #293264;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+input:not([disabled]) ~ .question--answer--label:hover,
+input:focus  ~ .question--answer--label{
+    background: #3336;
+}
+
+input:checked ~ .question--answer--label {
+    border: 1px solid #D6DBF5;
+    background: #D6DBF5;
+}
+
+input[disabled] ~ .question--answer--label {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+input[disabled]:checked ~ .question--answer--label:not(.correct)  {
+    background: #F8BCBC;
+    border: 1px solid #F8BCBC;
+}
+
+input[disabled] ~ .question--answer--label.correct {
+    opacity: 1;
+    background: #94D7A2;
+    border: 1px solid #94D7A2;
 }
