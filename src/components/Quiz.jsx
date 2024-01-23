@@ -7,6 +7,7 @@ import './Quiz.css'
 export default function Quiz() {
     const [questions, setQuestions] = useState([])
     const [isGraded, setIsGraded] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if(isGraded) return; // ONLY GET NEW QUESTIONS IF WE ARE NEW/RESETTING GAME
@@ -14,7 +15,10 @@ export default function Quiz() {
         let signal = controller.signal
 
         getData(signal).then(data => {
-            if(data) setQuestions(data)
+            if(data) {
+                setQuestions(data)
+                setIsLoading(false)
+            }
         })
 
         return () => {
@@ -77,9 +81,12 @@ export default function Quiz() {
 
     function restartQuiz() {
         setIsGraded(false)
+        setIsLoading(true)
     }
 
     return (
+        isLoading?<h1>Loading...</h1>
+        :
         <form className="quiz" onSubmit={gradeQuiz}>
             {questions.map(ele =>
                 <Question

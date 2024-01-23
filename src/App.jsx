@@ -13,7 +13,7 @@ export default function App() {
             :
             <Splash
                 title="Quizzical"
-                description="Some description if needed"
+                description="Random trivia questions from the Open Trivia API"
                 buttonText="Start Quiz"
                 handleClick={() => {setQuizStarted(true)}}
             />
